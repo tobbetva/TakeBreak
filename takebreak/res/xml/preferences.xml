@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+
+    <EditTextPreference
+        android:title="@string/pref_workPhaseLength_title"
+        android:summary="@string/pref_workPhaseLength_summary"
+        android:defaultValue="50"
+        android:maxLength="3"
+        android:key="prefkey_work_phase_length"/>
+
+    <EditTextPreference
+        android:title="@string/pref_restPhaseLength_title"
+        android:summary="@string/pref_restPhaseLength_summary"
+        android:defaultValue="10"
+        android:maxLength="3"
+        android:key="prefkey_rest_phase_length"/>
+
+    <CheckBoxPreference
+        android:key="prefkey_alert_via_sound"
+        android:title="@string/pref_alertViaSound_title"
+        android:summary="@string/pref_alertViaSound_summary"
+        android:defaultValue="true" />
+
+    <CheckBoxPreference
+        android:key="prefkey_alert_via_vibration"
+        android:title="@string/pref_alertViaVibration_title"
+        android:summary="@string/pref_alertViaVibration_summary"
+        android:defaultValue="false" />
+
+    <EditTextPreference
+        android:title="@string/pref_alertRepetition_title"
+        android:summary="@string/pref_alertRepetitionh_summary"
+        android:defaultValue="2"
+        android:maxLength="2"
+        android:key="prefkey_alert_repetition"/>
+
+    <CheckBoxPreference
+        android:key="prefkey_auto_phase_change"
+        android:title="@string/pref_autoPhaseChange_title"
+        android:summary="@string/pref_autoPhaseChange_summary"
+        android:defaultValue="false" />
+
+    <CheckBoxPreference
+        android:key="prefkey_keep_phone_awake"
+        android:title="@string/pref_keepPhoneAwake_title"
+        android:summary="@string/pref_keepPhoneAwake_summary"
+        android:defaultValue="false" />    
+    
+</PreferenceScreen>
