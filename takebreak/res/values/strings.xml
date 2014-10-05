@@ -23,7 +23,7 @@
     <string name="pref_alertRepetitionh_summary">Number of repetitions (with approx 2 seconds apart) of phase change sound/vibration. The number includes the first one, so have it >=1.</string>
 
     <string name="pref_autoPhaseChange_title">Auto Phase Change</string>
-    <string name="pref_autoPhaseChange_summary">Should phases change automatically.</string>
+    <string name="pref_autoPhaseChange_summary">Phases changes automatically with just one sound/vib alert.</string>
 
     <string name="pref_keepPhoneAwake_title">Keep Phone Awake</string>
     <string name="pref_keepPhoneAwake_summary">Keep phone awake when this app is visible.</string>
