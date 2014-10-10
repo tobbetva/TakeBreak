@@ -39,5 +39,6 @@
     <string name="str_overdue">overdue!</string>
     <string name="str_confirm_app_close">The timer is started.\nPress &#60;Back&#62; again if you really want to quit.</string>
     <string name="str_settings_caption">Settings</string>
+    <string name="str_timer_is_off">Timer is off (paused).</string>
     
 </resources>

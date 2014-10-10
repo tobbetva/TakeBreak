@@ -42,6 +42,9 @@ public class MainActivity extends Activity
                               // todo: ovan stämmer inte...
   private long totalDuration = 0; // Total duration (seconds) for current phase.
 
+  private boolean overdue = false;
+  private String overdue_str = "";
+  
   private boolean isOn = false;   // The timer is ticking.
   private boolean isWork = true; // Current phase is work phase.
   
@@ -66,7 +69,14 @@ public class MainActivity extends Activity
     PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     mySettings.readSettings(this);
     
+    overdue_str = getResources().getString(R.string.str_overdue);
+    
     clockTextView = (TextView) findViewById(R.id.clock_text);
+    if (clockTextView != null)
+    {
+      long timeLeft = mySettings.workPhaseLength*60;
+      clockTextView.setText(String.format("%02d:%02d", Math.abs(timeLeft) / 60, Math.abs(timeLeft) % 60));
+    }
 
     if (mySettings.keepPhoneAwake)
     {
@@ -170,6 +180,7 @@ public class MainActivity extends Activity
       case R.id.timer_on_chkbox:
         isOn = ((CheckBox) view).isChecked();
         applyTimerOnOffState();
+        createNotification();
         break;
     }
   }
@@ -210,14 +221,18 @@ public class MainActivity extends Activity
   // Creates or updates the one and only notification of the app. 
   // The actual notification sending should not cause any sound/vibration. All sounds/vibrations are issued from this app.
   // Clicking on the notification in the notification drawer should resume this activity - not start a new one.
-  private void createNotification(boolean overdue)
+  private void createNotification()
   {
     notifCreated = true;
 
     String contentText = isWork ? getResources().getString(R.string.str_phase_in_work_statustext) : getResources().getString(R.string.str_phase_in_rest_statustext);
     if (overdue)
     {
-      contentText += " " + Character.toUpperCase(getResources().getString(R.string.str_overdue).charAt(0)) + getResources().getString(R.string.str_overdue).substring(1);
+      contentText += " " + Character.toUpperCase(overdue_str.charAt(0)) + overdue_str.substring(1);
+    }
+    if (!isOn)
+    {
+      contentText += " " + getResources().getString(R.string.str_timer_is_off); 
     }
     
     int defaults = Notification.FLAG_NO_CLEAR; 
@@ -300,12 +315,13 @@ public class MainActivity extends Activity
     }
     if (!notifCreated) // The first start of timer.
     {
-      createNotification(false);
+      createNotification();
     }
   }
   
   private void applyPhase() // Phase has been changed.
   {
+    overdue = false;
     totalDuration = 0;
     startTime = TimeUnit.SECONDS.convert(System.nanoTime(), TimeUnit.NANOSECONDS);
     
@@ -330,7 +346,7 @@ public class MainActivity extends Activity
     
     updateGuiClock();
     
-    createNotification(false);
+    createNotification();
   }
   
   private void updateGuiClock()
@@ -342,9 +358,9 @@ public class MainActivity extends Activity
 
       long timeLeft = (isWork ? mySettings.workPhaseLength*60 - totalDuration : mySettings.restPhaseLength*60 - totalDuration);
       
-      String overdue = (timeLeft < 0 ? getResources().getString(R.string.str_overdue) : "");
+      overdue = (timeLeft < 0);
       
-      clockTextView.setText(String.format("%02d:%02d %s", Math.abs(timeLeft) / 60, Math.abs(timeLeft) % 60, overdue));
+      clockTextView.setText(String.format("%02d:%02d %s", Math.abs(timeLeft) / 60, Math.abs(timeLeft) % 60, (overdue ? overdue_str : "") ));
       
       if (timeLeft <= 0)
       {
@@ -357,9 +373,9 @@ public class MainActivity extends Activity
           isWork = !isWork;
           applyPhase();          
         }
-        else if (timeLeft < 0)
+        else if (timeLeft < 0 && timeLeft > -3) // Make sure the "overdue" string gets added to the notif.
         {
-          createNotification(true);
+          createNotification();
         }
       }
     }
